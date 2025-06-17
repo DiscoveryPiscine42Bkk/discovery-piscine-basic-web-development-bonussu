@@ -1,0 +1,21 @@
+.food{
+    background-color: aqua;
+    width: 50px;
+    border: solid black;
+}
+.button:hover{
+    background-color: blueviolet;
+}
+.food:hover{
+    background-color: antiquewhite;
+}
+.list{
+    display: none;
+}
+.menu{
+    display: inline-block;
+}
+.menu:hover .list{
+    display: flex;
+    flex-direction: column;
+}
