@@ -2,103 +2,125 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>It's over 9000 Calculator</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Basic Calculator</title>
     <style>
         body {
-            min-height: 100vh;
+            font-family: Arial, sans-serif;
             display: flex;
             justify-content: center;
             align-items: center;
-            background: #f0f4f8;
-            font-family: Arial, sans-serif;
+            min-height: 100vh;
+            background-color: #7598ea;
+            margin: 0;
         }
-        .calc-box {
-            background: #fff;
-            padding: 32px 24px;
-            border-radius: 12px;
-            box-shadow: 0 4px 16px rgba(0,0,0,0.08);
-            display: flex;
-            flex-direction: column;
-            gap: 16px;
-            align-items: center;
-        }
-        input[type="text"], select {
-            padding: 8px 12px;
-            font-size: 1.1rem;
-            border-radius: 6px;
-            border: 1px solid #bbb;
-            width: 80px;
+        .calculator-container {
+            background-color: #fad97e;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(233, 248, 148, 0.1);
             text-align: center;
         }
+        input[type="text"], select {
+            padding: 8px;
+            margin: 5px;
+            border: 1px solid #c7fcba;
+            border-radius: 4px;
+            font-size: 16px;
+        }
         input[type="submit"] {
-            padding: 10px 24px;
-            font-size: 1.1rem;
-            border-radius: 6px;
+            background-color: #a5cdf8;
+            color: rgb(180, 190, 250);
+            padding: 10px 20px;
             border: none;
-            background: #7c3aed;
-            color: #fff;
+            border-radius: 5px;
             cursor: pointer;
-            transition: background 0.2s;
+            font-size: 18px;
+            margin-top: 15px;
         }
         input[type="submit"]:hover {
-            background: #a78bfa;
-            color: #4b2996;
+            background-color: #cfadfa;
         }
     </style>
 </head>
 <body>
-    <form class="calc-box" id="calcForm" autocomplete="off">
-        <input type="text" id="left" placeholder="Left" />
-        <select id="op">
-            <option value="+">+</option>
-            <option value="-">-</option>
-            <option value="*">*</option>
-            <option value="/">/</option>
-            <option value="%">%</option>
-        </select>
-        <input type="text" id="right" placeholder="Right" />
-        <input type="submit" value="Try me!" />
-    </form>
+    <div class="calculator-container">
+        <h2>Basic Calculator</h2>
+        <form id="calculatorForm">
+            <input type="text" id="leftMember" placeholder="Left Number">
+            <select id="operator">
+                <option value="+">+</option>
+                <option value="-">-</option>
+                <option value="*">*</option>
+                <option value="/">/</option>
+                <option value="%">%</option>
+            </select>
+            <input type="text" id="rightMember" placeholder="Right Number">
+            <br>
+            <input type="submit" value="Try me!">
+        </form>
+    </div>
+
     <script>
-        function isPositiveInt(val) {
-            return /^\d+$/.test(val) && Number(val) >= 0;
-        }
+        const calculatorForm = document.getElementById('calculatorForm');
+        const leftMemberInput = document.getElementById('leftMember');
+        const operatorSelect = document.getElementById('operator');
+        const rightMemberInput = document.getElementById('rightMember');
 
-        document.getElementById('calcForm').onsubmit = function(e) {
-            e.preventDefault();
-            const left = document.getElementById('left').value.trim();
-            const right = document.getElementById('right').value.trim();
-            const op = document.getElementById('op').value;
+        calculatorForm.addEventListener('submit', function(event) {
+            event.preventDefault(); 
 
-            if (!isPositiveInt(left) || !isPositiveInt(right)) {
-                alert('Error :(');
-                return;
+            const leftVal = parseInt(leftMemberInput.value);
+            const rightVal = parseInt(rightMemberInput.value);
+            const operator = operatorSelect.value;
+
+            if (isNaN(leftVal) || leftVal < 0 || !Number.isInteger(leftVal) ||
+                isNaN(rightVal) || rightVal < 0 || !Number.isInteger(rightVal)) {
+                
+                alert('Error :('); 
+                console.log('Error: Both fields must contain positive integer values (>= 0).'); // Log error to console
+                return; 
             }
 
-            const l = Number(left);
-            const r = Number(right);
-
-            if ((op === '/' || op === '%') && r === 0) {
-                alert("It's over 9000!");
-                console.log("It's over 9000!");
-                return;
+            let result; 
+            
+            if ((operator === '/' || operator === '%') && rightVal === 0) {
+                const errorMessage = "It's over 9000!";
+                alert(errorMessage); 
+                console.log(errorMessage); 
+                console.log("Attempted calculation: " + leftVal + operator + rightVal + " (Division/Modulo by zero)");
+                return; 
             }
 
-            let result;
-            switch(op) {
-                case '+': result = l + r; break;
-                case '-': result = l - r; break;
-                case '*': result = l * r; break;
-                case '/': result = l / r; break;
-                case '%': result = l % r; break;
+            switch (operator) {
+                case '+':
+                    result = leftVal + rightVal;
+                    break;
+                case '-':
+                    result = leftVal - rightVal;
+                    break;
+                case '*':
+                    result = leftVal * rightVal;
+                    break;
+                case '/':
+                    result = leftVal / rightVal;
+                    break;
+                case '%':
+                    result = leftVal % rightVal;
+                    break;
+                default:
+                    alert('Error: Invalid operator.');
+                    console.log('Error: An invalid operator was selected.');
+                    return;
             }
-            alert(result);
-            console.log(result);
-        };
+
+            alert('Result: ' + result); 
+            console.log("Calculation result: " + leftVal + operator + rightVal + " = " + result); 
+        });
 
         setInterval(function() {
             alert('Please, use me...');
-        }, 30000);
+        }, 30000); 
     </script>
 </body>
 </html>
